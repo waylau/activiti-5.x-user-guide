@@ -29,9 +29,7 @@ This is the summary of my book.
 * Chapter 4. The Activiti API 
 	* [The Process Engine API and services 流程引擎的 API 和服务](Chapter 4. The Activiti API/The Process Engine API and services 流程引擎的 API 和服务.md)
 	* [Exception strategy 异常策略](Chapter 4. The Activiti API/Exception strategy 异常策略.md)
-	* [Working with the Activiti services
- 使用 Activiti 服务](Chapter 4. The Activiti API/Working with the Activiti services
- 使用 Activiti 服务.md)
+	* [Working with the Activiti services 使用 Activiti 服务](Chapter 4. The Activiti API/Working with the Activiti services 使用 Activiti 服务.md)
 	* [Query API 查询 API](Chapter 4. The Activiti API/Query API 查询 API.md)
 	* [Expressions 表达式](Chapter 4. The Activiti API/Expressions 表达式.md)
 	* [Unit testing 单元测试](Chapter 4. The Activiti API/Unit testing 单元测试.md)

@@ -254,7 +254,7 @@ Table 1. Supported events
 </td><td><code class="literal">org.activiti...ActivitiEntityEvent</code>
 </td></tr><tr><td>ACTIVITY_STARTED</td><td>一个节点开始执行</td><td><code class="literal">org.activiti...ActivitiActivityEvent</code></td></tr>
 <tr><td>ACTIVITY_COMPLETED</td><td>一个节点成功结束</td><td><code class="literal">org.activiti...ActivitiActivityEvent</code></td></tr>
-<tr><td>ACTIVITY_TIMOUT</td><td>activity 是由于一个中断定时器边界事件来中断.</td><td><code class="literal">org.activiti...ActivitiActivityEvent</code></td></tr>
+<tr><td>ACTIVITY_CANCELLED</td><td>要取消一个节点。取消是因为三个原因（MessageEventSubscriptionEntity, SignalEventSubscriptionEntity, TimerEntity）</td><td><code class="literal">org.activiti…​ActivitiActivityCancelledEvent</code></td></tr>
 <tr><td>ACTIVITY_SIGNALED</td><td>一个节点收到了一个信号</td><td><code class="literal">org.activiti...ActivitiSignalEvent</code></td></tr>
 <tr><td>ACTIVITY_MESSAGE_RECEIVED</td><td>一个节点收到了一个消息。在节点收到消息之前触发。收到后，会触发 ACTIVITY_SIGNAL 或ACTIVITY_STARTED，这会根据节点的类型（边界事件，事件子流程开始事件） </td></tr>
 <tr><td>ACTIVITY_ERROR_RECEIVED</td><td>一个节点收到了一个错误事件。在节点实际处理错误之前触发。事件的activityId对应着处理错误的节点。 这个事件后续会是ACTIVITY_SIGNALLED或ACTIVITY_COMPLETE，如果错误发送成功的话。</td></tr>
@@ -270,7 +270,8 @@ Table 1. Supported events
 </td><td><code class="literal">org.activiti...ActivitiEntityEvent</code></td></tr>
 <tr><td>TASK_COMPLETED</td><td>任务被完成了。它会在ENTITY_DELETE事件之前触发。当任务是流程一部分时，事件会在流程继续运行之前， 后续事件将是ACTIVITY_COMPLETE，对应着完成任务的节点。</td><td><code class="literal">org.activiti...ActivitiEntityEvent</code></td></tr>
 <tr><td>PROCESS_COMPLETED</td><td> 流程已结束。在最后一个节点
-的ACTIVITY_COMPLETED事件之后触发。 当流程到达的状态，没有任何后续连线时， 流程就会结束。</td></tr>
+的 ACTIVITY_COMPLETED 事件之后触发。 当流程到达的状态，没有任何后续连线时， 流程就会结束。</td><td><code class="literal">org.activiti…​ActivitiEntityEvent</code></td></tr>
+<tr><td>PROCESS_CANCELLED</td><td> 流程已取消。在流程实例删除前从运行时触发。流程实例被 API RuntimeService.deleteProcessInstance 调用</td><td><code class="literal">org.activiti…​ActivitiCancelledEvent</code></td></tr>
 <tr><td>MEMBERSHIP_CREATED</td><td>用户被添加到一个组里。事件包
 含了用户和组的id。</td><td><code class="literal">org.activiti...ActivitiMembershipEvent</code></td></tr>
 <tr><td>MEMBERSHIP_DELETED</td><td>用户被从一个组中删除。事件包

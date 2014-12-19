@@ -3,7 +3,7 @@ Chapter 1. Introduction 介绍
 
 ##License 协议
 
-Activiti 基于 [Apache V2](http://www.apache.org/licenses/LICENSE-2.0.txt) 协议
+Activiti 基于 [Apache V2](http://www.apache.org/licenses/LICENSE-2.0.txt) 协议.。Activiti Modeler 使用了不同的协议 [LGPL 2.1](http://opensource.org/licenses/LGPL-2.1)
 
 ##Download 下载
 

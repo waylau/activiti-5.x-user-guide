@@ -186,3 +186,54 @@ BPMN 2.0 区分了普通子流程， 也叫做内嵌子流程，和调用节点�
 	<callActivity id="callCheckCreditProcess" name="Check credit" calledElement="checkCreditProcess" />
 
 注意，子流程的流程定义是在执行阶段解析的。 就是说子流程可以与调用的流程分开部署，如果需要的话。
+
+####Passing variables 传递变量
+
+可以把流程变量传递给子流程，反之亦然。数据会复制给子流程，当它启动的时候， 并在它结束的时候复制回主流程。
+
+	<callActivity id="callSubProcess" calledElement="checkCreditProcess" >
+	  <extensionElements>
+	          <activiti:in source="someVariableInMainProcess" target="nameOfVariableInSubProcess" />
+	          <activiti:out source="someVariableInSubProcss" target="nameOfVariableInMainProcess" />
+	  </extensionElements>
+	</callActivity>
+
+我们使用 Activiti 扩展来简化 BPMN 标准元素调用dataInputAssociation 和 
+dataOutputAssociation，这只在你使用 BPMN 2.0 标准方式声明流程变量才管用。
+
+这里也可以使用表达式：
+
+	<callActivity id="callSubProcess" calledElement="checkCreditProcess" >
+	        <extensionElements>
+	          <activiti:in sourceExpression="${x+5}"" target="y" />
+	          <activiti:out source="${y+5}" target="z" />
+	        </extensionElements>
+	</callActivity>
+
+最后 z = y + 5 = x + 5 + 5
+
+####Example 实例
+
+下面的流程图演示了简单订单处理。先判断客户端信用，这可能与很多其他流程相同。 检查信用阶段这里设计成调用节点。
+
+![](http://99btgc01.info/uploads/2014/12/bpmn.call.activity.super.process.png)
+
+流程看起来像这样的：
+
+	<startEvent id="theStart" />
+	<sequenceFlow id="flow1" sourceRef="theStart" targetRef="receiveOrder" />
+	
+	<manualTask id="receiveOrder" name="Receive Order" />
+	<sequenceFlow id="flow2" sourceRef="receiveOrder" targetRef="callCheckCreditProcess" />
+	    
+	<callActivity id="callCheckCreditProcess" name="Check credit" calledElement="checkCreditProcess" />
+	<sequenceFlow id="flow3" sourceRef="callCheckCreditProcess" targetRef="prepareAndShipTask" />
+	   
+	<userTask id="prepareAndShipTask" name="Prepare and Ship" />
+	<sequenceFlow id="flow4" sourceRef="prepareAndShipTask" targetRef="end" />
+	    
+	<endEvent id="end" />
+
+子流程看起来像这样的：
+
+![](http://99btgc01.info/uploads/2014/12/bpmn.call.activity.sub.process.png)

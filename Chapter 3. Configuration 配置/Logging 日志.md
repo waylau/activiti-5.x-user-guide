@@ -19,5 +19,17 @@ activiti-explorer 和 activiti-rest 应用都使用了 Log4j 绑定。执行所�
 
 	<dependency>
 	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-log4j12</artifactId>
+	</dependency>
+
+activiti-explorer 和 activiti-rest 应用都使用了 Log4j 绑定。执行所有 activiti-* 模块的单元测试页使用了 Log4j。
+
+**特别提醒如果容器 classpath 中存在 commons-logging**： 为了把spring 日志转发给 SLF4J，需要使用桥接（参考 <http://www.slf4j.org/legacy.html#jclOverSLF4J>）。 如果你的容器提供了 commons-logging 实现，请参考下面网页：<http://www.slf4j.org/codes.html#release> 来确保稳定性。
+
+使用 Maven 的实例（忽略版本）：
+
+	<dependency>
+	  <groupId>org.slf4j</groupId>
 	  <artifactId>jcl-over-slf4j</artifactId>
 	</dependency>
+

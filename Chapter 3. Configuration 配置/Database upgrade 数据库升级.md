@@ -16,7 +16,7 @@
 	
 	</beans>
 
-**然后，把对应的数据库驱动放到 classpath 里。** 升级应用的 Activiti依赖。启动一个新版本的 Activiti 指向包含旧版本的数据库。将databaseSchemaUpdate 设置为 true， Activiti 会自动将
+**然后，把对应的数据库驱动放到 classpath 里。** 升级应用的 Activiti依赖。启动一个新版本的 Activiti 指向包含旧版本的数据库。将 databaseSchemaUpdate 设置为 true， Activiti 会自动将
 数据库表升级到新版本， 
 
 **当发现依赖和数据库表版本不通过时。**也可以执行更新升级 DDL 语句。 也可以执行数据库脚本，可以在 Activiti 下载页找到。

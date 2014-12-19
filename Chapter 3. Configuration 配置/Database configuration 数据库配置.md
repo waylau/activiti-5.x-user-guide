@@ -16,17 +16,26 @@
 
 数据配置示例: 
 
-	<property name="jdbcUrl" value="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000" /><property name="jdbcDriver" value="org.h2.Driver" /><property name="jdbcUsername" value="sa" /><property name="jdbcPassword" value="" />
+	<property name="jdbcUrl" value="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000" />
+	<property name="jdbcDriver" value="org.h2.Driver" />
+	<property name="jdbcUsername" value="sa" />
+	<property name="jdbcPassword" value="" />
 
 也可以使用 javax.sql.DataSource 实现 （比如，[Apache Commons ](http://commons.apache.org/
 dbcp/)的 DBCP）：
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" >  <property name="driverClassName" value="com.mysql.jdbc.Driver" />  <property name="url" value="jdbc:mysql://localhost:3306/activiti" />  <property name="username" value="activiti" />  <property name="password" value="activiti" />  <property name="defaultAutoCommit" value="false" /></bean>      <bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">      <property name="dataSource" ref="dataSource" />    ...
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" > 
+	 <property name="driverClassName" value="com.mysql.jdbc.Driver" />  
+	 <property name="url" value="jdbc:mysql://localhost:3306/activiti" />  
+	 <property name="username" value="activiti" />  <property name="password" value="activiti" />  <property name="defaultAutoCommit" value="false" />
+	</bean>      
+	<bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">      
+	 <property name="dataSource" ref="dataSource" />    ...
 
 注意，Activiti 的发布包中没有这些类。 你要自己把对应的类（比如，从 DBCP 里）放到你的 classpath 下。
 无论你使用 JDBC 还是 DataSource 的方式，都可以设置下面的配置：
 
-* databaseType: 一般不用设置，因为可以自动通过数据库连接的元数据获取。 只有自动检测失败时才需要设置。 可能的值有：{h2, mysql, oracle, postgres, mssql, db2}。 **如果没使用默认的H2数据库就必须设置这项**。 这个配置会决定使用哪些创建/删除脚本和查询语句。 参考支持数据库章节 了解支持哪些类型。
+* databaseType: 一般不用设置，因为可以自动通过数据库连接的元数据获取。 只有自动检测失败时才需要设置。 可能的值有：{h2, mysql, oracle, postgres, mssql, db2}。 **如果没使用默认的H2数据库就必须设置这项**。 这个配置会决定使用哪些创建/删除脚本和查询语句。 参考[支持数据库](Supported databases 支持的数据库.md)章节 了解支持哪些类型。
 * databaseSchemaUpdate: 设置流程引擎启动和关闭时如何处理数据库表。
 	* false（默认）：检查数据库表的版本和依赖库的版本， 如果版本不匹配就抛出异常。
 	* true: 构建流程引擎时，执行检查，如果需要就执行更新。 如果表不存在，就创建

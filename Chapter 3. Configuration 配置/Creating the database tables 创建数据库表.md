@@ -4,7 +4,7 @@
 
 * 把 activiti-engine 的 jar 放到 classpath 下
 * 添加对应的数据库驱动
-* 把 Activiti 配置文件 (activiti.cfg.xml) 放到 classpath下， 指向你的数据库（参考数据库配置章节）
+* 把 Activiti 配置文件 (activiti.cfg.xml) 放到 classpath下， 指向你的数据库（参考[数据库配置](Database configuration 数据库配置.md)章节）
 * 执行 DbSchemaCreate 类的 main 方法
 
 不过，一般情况只有数据库管理员才能执行 DDL 语句。 在生产环境，这也是最明智的选择。SQL DDL语句可以从 Activiti 下载页或 Activiti发布目录里找到，在 database 子目录下。 脚本

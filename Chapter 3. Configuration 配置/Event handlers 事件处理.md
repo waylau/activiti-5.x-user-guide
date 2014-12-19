@@ -152,30 +152,41 @@ process-definition, task。
 
 另一种处理事件的方法是抛出一个 BPMN 事件。请注意它只针对与抛出一个activiti 事件类型的 BPMN 事件。 比如，抛出一个 BPMN 事件，在流程实例删除时，会导致一个错误。 下面的代码演示了如何在流程实例中抛出一个 signal，把 signal 抛出到外部流程（全局），在流程实例中抛出一个消息事件， 在流程实例中抛出一个错误事件。除了使用 class 或delegateExpression， 还使用了 throwEvent 属性，通过额外属性，指定了抛出事件的类型。
 
+```xml
+
 	<process id="testEventListeners">
 	  <extensionElements>
 	    <activiti:eventListener throwEvent="signal" signalName="My signal" events="TASK_ASSIGNED" />
 	  </extensionElements>
 	</process>
+```
+
+```xml
 
 	<process id="testEventListeners">
 	  <extensionElements>
 	    <activiti:eventListener throwEvent="globalSignal" signalName="My signal" events="TASK_ASSIGNED" />
 	  </extensionElements>
 	</process>
+```
+
+```xml
 
 	<process id="testEventListeners">
 	  <extensionElements>
 	    <activiti:eventListener throwEvent="message" messageName="My message" events="TASK_ASSIGNED" />
 	  </extensionElements>
 	</process>
+```
+
+```xml
 
 	<process id="testEventListeners">
 	  <extensionElements>
 	    <activiti:eventListener throwEvent="error" errorCode="123" events="TASK_ASSIGNED" />
 	  </extensionElements>
 	</process>
-
+```
 
 如果需要声明额外的逻辑，是否抛出 BPMN 事件，可以扩展 activiti 提供的监听器类。在子类中重写 isValidEvent(ActivitiEvent event)， 可以防止抛出 BPMN 事件。对应的类是
 org.activiti.engine.test.api.event.SignalThrowingEventListenerTest,
@@ -208,7 +219,7 @@ org.activiti.engine.impl.bpmn.helper.ErrorThrowingEventListener.
 
 下面是引擎中可能出现的所有事件类型。每个类型都对应 org.activiti.engine.delegate.event.ActivitiEventType 中的一个枚举值
 
-Table 3.2. Supported events
+Table 1. Supported events 
 
 <table border="1" summary="Supported events"><colgroup><col><col><col></colgroup>
 <thead>

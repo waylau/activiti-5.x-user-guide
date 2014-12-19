@@ -17,19 +17,46 @@ bean：
 	</bean>
 
 接下来，我们需要添加包含了默认的 H2 配置的 context.xml 文件。 如果已经有了 JNDI 配置，
-会覆盖这些配置。 对 Activiti Explorer 来说，对应的配置文件activiti-webappexplorer2/src/main/webapp/META-INF/context.xml 如下所示：
+会覆盖这些配置。 对 Activiti Explorer 来说，对应的配置文件 activiti-webapp-explorer2/src/main/webapp/META-INF/context.xml 如下所示：
 
-	<Context antiJARLocking="true" path="/activiti-explorer2">    
-	<Resource auth="Container"              name="jdbc/activitiDB"              type="javax.sql.DataSource"              scope="Shareable"              description="JDBC DataSource"              url="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000"              driverClassName="org.h2.Driver"              username="sa"              password=""              defaultAutoCommit="false"              initialSize="5"              maxWait="5000"              maxActive="120"              maxIdle="5"/>
+	<Context antiJARLocking="true" path="/activiti-explorer2">
+	    <Resource auth="Container"
+	              name="jdbc/activitiDB"
+	              type="javax.sql.DataSource"
+	              scope="Shareable"
+	              description="JDBC DataSource"
+	              url="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=1000"
+	              driverClassName="org.h2.Driver"
+	              username="sa"
+	              password=""
+	              defaultAutoCommit="false"
+	              initialSize="5"
+	              maxWait="5000"
+	              maxActive="120"
+	              maxIdle="5"/>
 	</Context>
 
-对于 Activiti REST 应用，添加的 activiti-webapp-rest2/src/main/webapp/META-INF/context.xml 如下所示：
+对于 Activiti REST web 应用，添加的 activiti-webapp-rest2/src/main/webapp/META-INF/context.xml  如下所示：
 
-	<?xml version="1.0" encoding="UTF-8"?><Context antiJARLocking="true" path="/activiti-rest2">    	
-		<Resource auth="Container"              name="jdbc/activitiDB"              type="javax.sql.DataSource"              scope="Shareable"              description="JDBC DataSource"              url="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=-1"              driverClassName="org.h2.Driver"              username="sa"              password=""              defaultAutoCommit="false"              initialSize="5"              maxWait="5000"              maxActive="120"              maxIdle="5"/>
+	<?xml version="1.0" encoding="UTF-8"?>
+	<Context antiJARLocking="true" path="/activiti-rest2">
+	    <Resource auth="Container"
+	              name="jdbc/activitiDB"
+	              type="javax.sql.DataSource"
+	              scope="Shareable"
+	              description="JDBC DataSource"
+	              url="jdbc:h2:mem:activiti;DB_CLOSE_DELAY=-1"
+	              driverClassName="org.h2.Driver"
+	              username="sa"
+	              password=""
+	              defaultAutoCommit="false"
+	              initialSize="5"
+	              maxWait="5000"
+	              maxActive="120"
+	              maxIdle="5"/>
 	</Context>
 
-可选的一步，现在可以删除 Activiti Explorer 和 Activiti Rest 两个应用中 不再使用的 db.properties 文件了。
+可选的一步，现在可以删除 Activiti Explorer 和 Activiti REST 两个应用中 不再使用的 db.properties 文件了。
 
 ###Configuration 配置
 
@@ -39,6 +66,19 @@ JNDI 数据库配置会因为你使用的 Servlet 容器 不同而不同。 下�
 $CATALINA_BASE/conf/[enginename]/[hostname]/[warname].xml （对于 Activiti Explorer 来说，通常是在 $CATALINA_BASE/conf/
 Catalina/localhost/activiti-explorer.war）。 当应用第一次发布时，会把这个文件从 war 中复制出来。 所以如果这个文件已经存在了，你需要替换它。要想修改 JNDI 资源让应用连接 mysql 而不是 H2，可以像下面这样修改：
 
-	<?xml version="1.0" encoding="UTF-8"?>    <Context antiJARLocking="true" path="/activiti-explorer2">        
-		<Resource auth="Container"            name="jdbc/activitiDB"            type="javax.sql.DataSource"            description="JDBC DataSource"            url="jdbc:mysql://localhost:3306/activiti"            driverClassName="com.mysql.jdbc.Driver"            username="sa"            password=""            defaultAutoCommit="false"            initialSize="5"            maxWait="5000"            maxActive="120"            maxIdle="5"/>        
-	</Context>
+	<?xml version="1.0" encoding="UTF-8"?>
+	    <Context antiJARLocking="true" path="/activiti-explorer2">
+	        <Resource auth="Container"
+	            name="jdbc/activitiDB"
+	            type="javax.sql.DataSource"
+	            description="JDBC DataSource"
+	            url="jdbc:mysql://localhost:3306/activiti"
+	            driverClassName="com.mysql.jdbc.Driver"
+	            username="sa"
+	            password=""
+	            defaultAutoCommit="false"
+	            initialSize="5"
+	            maxWait="5000"
+	            maxActive="120"
+	            maxIdle="5"/>
+	        </Context>

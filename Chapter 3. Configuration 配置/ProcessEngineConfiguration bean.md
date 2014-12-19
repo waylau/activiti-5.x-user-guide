@@ -1,6 +1,6 @@
 ##ProcessEngineConfiguration bean
 
-activiti.cfg.xml 必须包含一个bean, id为'processEngineConfiguration'。
+activiti.cfg.xml 必须包含一个 bean, id为'processEngineConfiguration'。
 
 	<bean id="processEngineConfiguration" class="org.activiti.engine.impl.cfg.StandaloneProcessEngineConfiguration">
 
@@ -10,5 +10,5 @@ activiti.cfg.xml 必须包含一个bean, id为'processEngineConfiguration'。
 流程引擎。Activiti 会自己处理事务。 默认，数据库只在引擎启动时检测 （如果没有 Activiti 的表或者表结构不正确就会抛出异常）。
 * org.activiti.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration: 单元测试时的辅助类。Activiti 会自己控制事务。 默认使用 H2 内存数据库。数据库表会在引擎启动时创建，关闭时删除。 使用它时，不需要其他配置（除非使用 job 执行器或邮件功
 能）。
-* org.activiti.spring.SpringProcessEngineConfiguration: 在Spring 环境下使用流程引擎。 参考 [Chapter 5. Spring integration 集成 Spring](https://github.com/waylau/activiti-5.x-user-guide/tree/master/Chapter%205.%20Spring%20integration%20%E9%9B%86%E6%88%90%20Spring)。
+* org.activiti.spring.SpringProcessEngineConfiguration: 在Spring 环境下使用流程引擎。 参考 [Chapter 5. Spring integration 集成 Spring](../Chapter 5. Spring integration 集成 Spring/README.md)。
 * org.activiti.engine.impl.cfg.JtaProcessEngineConfiguration: 单独运行流程引擎，并使用 JTA 事务。

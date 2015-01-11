@@ -33,6 +33,7 @@ This is the summary of my book.
 	* [Exception strategy 异常策略](Chapter 4. The Activiti API/Exception strategy 异常策略.md)
 	* [Working with the Activiti services 使用 Activiti 服务](Chapter 4. The Activiti API/Working with the Activiti services 使用 Activiti 服务.md)
 	* [Query API 查询 API](Chapter 4. The Activiti API/Query API 查询 API.md)
+	* [Variables 变量](Chapter 4. The Activiti API/Variables 变量.md)
 	* [Expressions 表达式](Chapter 4. The Activiti API/Expressions 表达式.md)
 	* [Unit testing 单元测试](Chapter 4. The Activiti API/Unit testing 单元测试.md)
 	* [Debugging unit tests 调试单元测试](Chapter 4. The Activiti API/Debugging unit tests 调试单元测试.md)

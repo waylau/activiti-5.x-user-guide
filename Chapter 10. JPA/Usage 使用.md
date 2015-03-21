@@ -37,3 +37,22 @@
 	    this.value = value;
 	  }
 	}
+
+我们开始一个新的流程实例，添加实体作为变量。与其它的变量一样，它们存储在引擎的持久存储区。当下次这个变量被请求，它会从基于类和Id的存储的 `EntityManager` 中加载。
+
+	Map<String, Object> variables = new HashMap<String, Object>();
+	variables.put("entityToUpdate", entityToUpdate);
+	
+	ProcessInstance processInstance = runtimeService.startProcessInstanceByKey("UpdateJPAValuesProcess", variables);
+
+在我们的流程定义的第一个节点包含一个 `serviceTask` 将调用方法 在 `entityToUpdate` 上 `setValue`，它解析为 JPA 变量，我们启动流程实例并将从相关联的当前引擎的上下文“EntityManager”进行加载。
+
+	<serviceTask id='theTask' name='updateJPAEntityTask'
+	  activiti:expression="${entityToUpdate.setValue('updatedValue')}" />
+
+当 service-task 完成后，流程实例等在流程定义中定义的 userTask，这使我们能够检查流程实例。在这一点上，EntityManager 已刷新并更改到实体已经被推到数据库。当我们得到变量 entityToUpdate 值时，它再次加载，我们得到实体，并将实体中的属性 `value` 设置到 `updatedValue` 。
+
+	// Servicetask in process 'UpdateJPAValuesProcess' should have set value on entityToUpdate.
+	Object updatedEntity = runtimeService.getVariable(processInstance.getId(), "entityToUpdate");
+	assertTrue(updatedEntity instanceof FieldAccessJPAEntity);
+	assertEquals("updatedValue", ((FieldAccessJPAEntity)updatedEntity).getValue());

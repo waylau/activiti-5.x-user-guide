@@ -1,6 +1,6 @@
 ##10.3. Usage 用法
 
-###10.3.1. Simple Example
+###10.3.1. 简单例子
 
 使用 JPA 变量的例子可以在 JPAVariableTest 中找到。我们将会一步一步的解释 `JPAVariableTest.testUpdateJPAEntityValues`。
 
@@ -56,3 +56,71 @@
 	Object updatedEntity = runtimeService.getVariable(processInstance.getId(), "entityToUpdate");
 	assertTrue(updatedEntity instanceof FieldAccessJPAEntity);
 	assertEquals("updatedValue", ((FieldAccessJPAEntity)updatedEntity).getValue());
+
+###10.3.2. 查询 JPA 处理变量
+
+可以查询 `ProcessInstances` 和 `Execution` 包含 JPA 实体作为变量值。注意 只有 在 ProcessInstanceQuery 和 ExecutionQuery ，`variableValueEquals(name, entity)` 是支持 JPA 实体的 。
+方法 `variableValueNotEquals`, `variableValueGreaterThan`, `variableValueGreaterThanOrEqual`, `variableValueLessThan `和 `variableValueLessThanOrEqual` 不支持，并且当一个 JPA 实体传递作为值时，会抛出 `ActivitiException`。
+
+	ProcessInstance result = runtimeService.createProcessInstanceQuery()
+	    .variableValueEquals("entityToQuery", entityToQuery).singleResult();
+
+###10.3.3. 高级例子：使用 Spring bean 和 JPA
+
+JPASpringTest 例子可以在 activiti-spring-examples 中找到。它的使用场景如下：
+
+
+* 存在一个使用 JPA 实体的 Spring bean，用于存储贷款请求。
+* 使用 Activiti，我们可以利用那些由现有的 bean 获得的已有的实体，并将其作为变量在流程中使用。
+流程是按以下步骤进行定义的：
+	* 服务任务，利用已有的 LoanRequestBean 使用启动流程时接收的变量（比如，可以来源于开始的表单）来创建新的 LoanRequest。使用 activiti:resultVariable（它以一个变量来存储表达式结果）将创建出来的实体以变量进行存储。
+	* 用户任务，让经理查看请求，批准/不批准，结果存储到一个 boolean 类型的变量 approvedByManager 上。
+	* 服务任务，用来更新贷款请求实体以使该实体与流程同步。
+	* 根据实体属性 approved 的值，利用排他分支来决定下一步选择哪条路径：当请求被批准时，流程将结束；否则，会另有一个任务（发送拒绝信），这样就可以由拒绝信手动地通知用户了。
+	
+请注意此流程不包含任何表单，所以其只用于单元测试
+
+![](http://activiti.org/userguide/images/jpa.spring.example.process.png)
+
+	<?xml version="1.0" encoding="UTF-8"?>
+	<definitions id="taskAssigneeExample"
+	  xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xmlns:activiti="http://activiti.org/bpmn"
+	  targetNamespace="org.activiti.examples">
+	
+	  <process id="LoanRequestProcess" name="Process creating and handling loan request">
+	    <startEvent id='theStart' />
+	    <sequenceFlow id='flow1' sourceRef='theStart' targetRef='createLoanRequest' />
+	
+	    <serviceTask id='createLoanRequest' name='Create loan request'
+	      activiti:expression="${loanRequestBean.newLoanRequest(customerName, amount)}"
+	      activiti:resultVariable="loanRequest"/>
+	    <sequenceFlow id='flow2' sourceRef='createLoanRequest' targetRef='approveTask' />
+	
+	    <userTask id="approveTask" name="Approve request" />
+	    <sequenceFlow id='flow3' sourceRef='approveTask' targetRef='approveOrDissaprove' />
+	
+	    <serviceTask id='approveOrDissaprove' name='Store decision'
+	      activiti:expression="${loanRequest.setApproved(approvedByManager)}" />
+	    <sequenceFlow id='flow4' sourceRef='approveOrDissaprove' targetRef='exclusiveGw' />
+	
+	    <exclusiveGateway id="exclusiveGw" name="Exclusive Gateway approval" />
+	    <sequenceFlow id="endFlow1" sourceRef="exclusiveGw" targetRef="theEnd">
+	      <conditionExpression xsi:type="tFormalExpression">${loanRequest.approved}</conditionExpression>
+	    </sequenceFlow>
+	    <sequenceFlow id="endFlow2" sourceRef="exclusiveGw" targetRef="sendRejectionLetter">
+	      <conditionExpression xsi:type="tFormalExpression">${!loanRequest.approved}</conditionExpression>
+	    </sequenceFlow>
+	
+	    <userTask id="sendRejectionLetter" name="Send rejection letter" />
+	    <sequenceFlow id='flow5' sourceRef='sendRejectionLetter' targetRef='theOtherEnd' />
+	
+	    <endEvent id='theEnd' />
+	    <endEvent id='theOtherEnd' />
+	  </process>
+	
+	</definitions>
+
+虽然上面的例子很简单，但确实展示出了结合 Spring 和参数化方法表达式来使用 JPA 的强大。此流程根本不需要定制 java
+代码（当然了，除 Spring bean 外），大大加速了部署
